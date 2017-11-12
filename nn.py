@@ -96,8 +96,8 @@ avg_loss /= float(loss_count)
 print(avg_loss)'''
 
 print('Begin building')
-state = np.zeros([batch_size, window_size])
-#state = x[0]
+#state = np.zeros([batch_size, window_size])
+state = x[0]
 i = 0
 while i < 100:
 	inpts = state
