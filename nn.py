@@ -7,6 +7,7 @@ from segments import segment_dict
 batch_size = 10
 window_size = 25
 embed_size = 100
+num_epochs = 1000
 
 def indexed(data):
 	indices = dict()
@@ -96,6 +97,7 @@ print(avg_loss)'''
 
 print('Begin building')
 state = np.zeros([batch_size, window_size])
+#state = x[0]
 i = 0
 while i < 100:
 	inpts = state
