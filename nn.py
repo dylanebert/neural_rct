@@ -4,10 +4,10 @@ import os
 import numpy as np
 from segments import segment_dict
 
-batch_size = 10
-window_size = 25
-embed_size = 100
-num_epochs = 1000
+batch_size = 20
+window_size = 20
+num_epochs = 50
+num_layers = 2
 
 def indexed(data):
 	indices = dict()
@@ -47,23 +47,24 @@ data_indexed, indices, inverse_indices, vocab_size = indexed(data)
 
 inpt = tf.placeholder(tf.int32, shape = [batch_size, window_size])
 answr = tf.placeholder(tf.int32, shape = [batch_size, window_size])
-E = tf.Variable(tf.random_normal([vocab_size, embed_size], stddev = .1))
-embeddings = tf.nn.embedding_lookup(E, inpt)
+hidden = tf.one_hot(inpt, vocab_size)
 
-rnn = tf.contrib.rnn.BasicLSTMCell(embed_size)
-initialState = rnn.zero_state(batch_size, tf.float32)
-output, nextState = tf.nn.dynamic_rnn(rnn, embeddings, initial_state = initialState)
+def lstm_cell():
+	return tf.contrib.rnn.BasicLSTMCell(vocab_size)
+cell = tf.contrib.rnn.MultiRNNCell([lstm_cell() for _ in range(num_layers)], state_is_tuple=True)
+initialState = cell.zero_state(batch_size, tf.float32)
+output, nextState = tf.nn.dynamic_rnn(cell, hidden, initial_state = initialState)
 
-W = tf.Variable(tf.random_normal([embed_size, vocab_size], stddev = .1))
+W = tf.Variable(tf.random_normal([vocab_size, vocab_size], stddev = .1))
 b = tf.Variable(tf.random_normal([vocab_size], stddev = .1))
 
-output = tf.reshape(output, [-1, embed_size])
+output = tf.reshape(output, [-1, vocab_size])
 logits_1 = tf.nn.xw_plus_b(output, W, b)
 logits = tf.reshape(logits_1, [batch_size, window_size, vocab_size])
 
-xEnt = tf.contrib.seq2seq.sequence_loss(logits, answr, tf.ones([batch_size, window_size], dtype = tf.float32), average_across_timesteps = False, average_across_batch = True)
+xEnt = tf.nn.sparse_softmax_cross_entropy_with_logits(logits = logits, labels = answr)
 loss = tf.reduce_sum(xEnt)
-train = tf.train.AdamOptimizer(1e-3).minimize(loss)
+train = tf.train.AdamOptimizer(.01).minimize(loss)
 
 sess = tf.Session()
 init = tf.global_variables_initializer()
