@@ -222,6 +222,7 @@ segments = [
 	"ELEM_BANKED_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP",          #DA
 ]
 segment_dict = {k: v for k, v in enumerate(segments)}
+segment_dict_inverse = {v: k for k, v in enumerate(segments)}
 
 blacklist = [
 	"ELEM_S_BEND_LEFT",
@@ -776,6 +777,12 @@ constraints = {
 		"ELEM_LEFT_QUARTER_HELIX_LARGE_UP", "ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN",
 		"ELEM_RIGHT_QUARTER_HELIX_LARGE_UP", "ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN"]
 }
+
+def clean(segment_list):
+	for segment in segment_list:
+		if '_COVERED' in segment:
+			segment = segment.replace('_COVERED', '')
+	return segment_list
 
 def is_valid(cur, next):
 	if next in blacklist:
