@@ -179,8 +179,8 @@ segments = [
 	"ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN",                         #AF
 	"ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP",                          #B0
 	"ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP",                         #B1
-	"ELEM_BANKED_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP",			 #B2
-	"ELEM_BANKED_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP",    		 #B3
+	"ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP",     #B2
+	"ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP",   #B3
 	"ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK",   #B4
 	"ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK", #B5
 	"ELEM_POWERED_LIFT",                                         #B6
@@ -219,7 +219,7 @@ segments = [
 	"ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL",                    #D7
 	"ELEM_BLOCK_BRAKES",                                         #D8
 	"ELEM_BANKED_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP",           #D9
-	"ELEM_BANKED_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP",          #DA
+	"ELEM_BANKED_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP"           #DA
 ]
 segment_dict = {k: v for k, v in enumerate(segments)}
 segment_dict_inverse = {v: k for k, v in enumerate(segments)}
@@ -334,6 +334,8 @@ blacklist = [
 	"ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK",
 	"ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK"
 ]
+blacklist_inidices = [segment_dict_inverse[segment] for segment in blacklist]
+
 constraints = {
 	"ELEM_FLAT": ["ELEM_FLAT", "ELEM_BEGIN_STATION", "ELEM_FLAT_TO_25_DEG_UP", "ELEM_FLAT_TO_25_DEG_DOWN", 
 		"ELEM_FLAT_TO_LEFT_BANK", "ELEM_FLAT_TO_RIGHT_BANK", "ELEM_LEFT_QUARTER_TURN_5_TILES", "ELEM_RIGHT_QUARTER_TURN_5_TILES",
@@ -676,7 +678,7 @@ constraints = {
 	"ELEM_LEFT_EIGHTH_TO_DIAG": ["ELEM_LEFT_EIGHTH_TO_ORTHOGONAL", "ELEM_DIAG_FLAT", "ELEM_DIAG_FLAT_TO_25_DEG_UP",
 		"ELEM_DIAG_FLAT_TO_25_DEG_DOWN", "ELEM_DIAG_FLAT_TO_60_DEG_UP", "ELEM_DIAG_FLAT_TO_60_DEG_DOWN",
 		"ELEM_DIAG_FLAT_TO_LEFT_BANK", "ELEM_DIAG_FLAT_TO_RIGHT_BANK"],
-	"ELEM_RIGHT_EIGHT_TO_DIAG": ["ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL", "ELEM_DIAG_FLAT", "ELEM_DIAG_FLAT_TO_25_DEG_UP",
+	"ELEM_RIGHT_EIGHTH_TO_DIAG": ["ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL", "ELEM_DIAG_FLAT", "ELEM_DIAG_FLAT_TO_25_DEG_UP",
 		"ELEM_DIAG_FLAT_TO_25_DEG_DOWN", "ELEM_DIAG_FLAT_TO_60_DEG_UP", "ELEM_DIAG_FLAT_TO_60_DEG_DOWN",
 		"ELEM_DIAG_FLAT_TO_RIGHT_BANK", "ELEM_DIAG_FLAT_TO_RIGHT_BANK"],
 	"ELEM_LEFT_EIGHTH_TO_ORTHOGONAL": ["ELEM_FLAT", "ELEM_BEGIN_STATION", "ELEM_FLAT_TO_25_DEG_UP", "ELEM_FLAT_TO_25_DEG_DOWN", 
@@ -777,16 +779,25 @@ constraints = {
 		"ELEM_LEFT_QUARTER_HELIX_LARGE_UP", "ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN",
 		"ELEM_RIGHT_QUARTER_HELIX_LARGE_UP", "ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN"]
 }
+constraints_indices = dict()
+for constraint in constraints.keys():
+	constraint_indices = [segment_dict_inverse[elem] for elem in constraints[constraint]]
+	constraints_indices[segment_dict_inverse[constraint]] = constraint_indices
 
 def clean(segment_list):
 	for i, segment in enumerate(segment_list):
-		if '_COVERED' in segment:
-			segment_list[i] = segment.replace('_COVERED', '')
+		if segment not in segments:
+			continue
+		if '_COVERED' in segment_dict[segment]:
+			segment_list[i] = segment_dict_inverse[segment.replace('_COVERED', '')]
 	return segment_list
 
 def is_valid(cur, next):
-	if next in blacklist:
+	if next not in segment_dict:
 		return False
-	if not next in constraints[cur]:
+	if next in blacklist_inidices:
 		return False
+	if cur in constraints_indices:
+		if not next in constraints_indices[cur]:
+			return False
 	return True

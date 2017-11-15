@@ -2,12 +2,15 @@ import tensorflow as tf
 import sys
 import os
 import numpy as np
-from segments import segment_dict
+from segments import *
 
 batch_size = 20
-window_size = 20
-num_epochs = 50
+window_size = 50
+num_epochs = 100
 num_layers = 2
+
+def preprocess(data):
+	return [0xff] * window_size + clean(data)
 
 def indexed(data):
 	indices = dict()
@@ -43,6 +46,7 @@ data = []
 for file in files:
 	with open('{0}/{1}'.format(dir, file), 'rb') as f:
 		data += f.read()
+data = preprocess(data)
 data_indexed, indices, inverse_indices, vocab_size = indexed(data)
 
 inpt = tf.placeholder(tf.int32, shape = [batch_size, window_size])
@@ -97,15 +101,20 @@ avg_loss /= float(loss_count)
 print(avg_loss)'''
 
 print('Begin building')
-#state = np.zeros([batch_size, window_size])
-state = x[0]
+state = np.zeros([batch_size, window_size])
+#state = x[0]
 i = 0
 while i < 100:
 	inpts = state
-	res = sess.run(logits, feed_dict = {inpt: inpts})
-	state = [[np.argmax(res[j][k]) for k in range(len(state[j]))] for j in range(len(state))]
-	try:
-		print(segment_dict[inverse_indices[state[0][-1]]])
-	except:
-		print('{0:x}'.format(inverse_indices[state[0][-1]]))
+	res_probs = sess.run(logits, feed_dict = {inpt: inpts})
+	res_probs_batch = res_probs[0]
+	results = np.argsort(-res_probs_batch[-1])
+	j = 0
+	while not is_valid(inverse_indices[state[0][-1]], inverse_indices[results[j]]):
+		j += 1
+	state[0] = np.append(state[0][1:], [results[j]])
+	segment = segment_dict[inverse_indices[state[0][-1]]]
+	print(segment)
+	if segment == 'ELEM_BEGIN_STATION':
+		break
 	i += 1
