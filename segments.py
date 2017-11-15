@@ -779,9 +779,9 @@ constraints = {
 }
 
 def clean(segment_list):
-	for segment in segment_list:
+	for i, segment in enumerate(segment_list):
 		if '_COVERED' in segment:
-			segment = segment.replace('_COVERED', '')
+			segment_list[i] = segment.replace('_COVERED', '')
 	return segment_list
 
 def is_valid(cur, next):
@@ -790,4 +790,3 @@ def is_valid(cur, next):
 	if not next in constraints[cur]:
 		return False
 	return True
-
