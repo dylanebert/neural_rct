@@ -14,10 +14,13 @@ def clean_file(filename, dirname):
 		return
 	data = np.fromfile(path, dtype=np.uint8)
 	i = 0xa3
-	while i > 0 and data[i] != 1:
-		i -= 1
-	while i > 2 and data[i-2] == 3:
-		i -= 2
+	try:
+		while i > 0 and data[i] != 1:
+			i -= 1
+		while i > 2 and data[i-2] == 3:
+			i -= 2
+	except:
+		raise TrackError('Start error with {0}'.format(filename))
 	start_i = i
 	segment_counters = dict()
 	qualifiers = list()
@@ -40,7 +43,10 @@ def clean_file(filename, dirname):
 			elif consec_odd > 2:
 				while i > start_i:
 					bytes.pop()
-					segment_counters[data[i]] -= 1
+					try:
+						segment_counters[data[i]] -= 1
+					except:
+						raise TrackError('Unknown error near {0:x} on {1}'.format(i, filename))
 					if segment_counters[data[i]] == 0:
 						i += 1
 						consec_odd = 0
