@@ -61,8 +61,6 @@ def clean_file(filename, dirname):
 		raise TrackError('Track \'{0}\' does not end with station. Start {1:x}: {2:x}; End {3:x}: {4:x}'.format(filename, start_i, data[start_i], i-2, data[i-2]))
 	if not os.path.exists('extracted_tracks'):
 		os.makedirs('extracted_tracks')
-	while len(bytes) % 25 != 0:
-		bytes.append(0xff)
 	with open('extracted_tracks/{1}'.format(dirname, filename), 'wb') as f:
 		f.write(bytearray(bytes))
 	os.remove(path)
