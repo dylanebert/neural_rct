@@ -1,12 +1,14 @@
 import tensorflow as tf
 import numpy as np
 import sys
+import pickle
 from preprocess import preprocess, batched
 
 #hyperparameters
 batch_size = 25
 window_size = 50
-num_epochs = 10
+num_epochs = 100
+num_layers = 2
 
 #data
 if len(sys.argv) != 2:
@@ -27,7 +29,9 @@ biases = {
 }
 
 def RNN(x, weights, biases):
-	lstm_cell = tf.contrib.rnn.BasicLSTMCell(vocab_size)
+	lstm1 = tf.contrib.rnn.BasicLSTMCell(vocab_size)
+	lstm2 = tf.contrib.rnn.BasicLSTMCell(vocab_size)
+	lstm_cell = tf.contrib.rnn.MultiRNNCell([lstm1, lstm2], state_is_tuple=True)
 	initialState = lstm_cell.zero_state(batch_size, tf.float32)
 	one_hot = tf.one_hot(x, vocab_size)
 	output, nextState = tf.nn.dynamic_rnn(lstm_cell, one_hot, initial_state=initialState)
@@ -59,3 +63,7 @@ with tf.Session() as sess:
 		print(perplexity)
 		
 	saver.save(sess, 'tmp/model.ckpt')
+	
+#Save properties
+with open('tmp/vars.pkl', 'wb') as f:
+	pickle.dump([batch_size, window_size, vocab_size, num_layers, from_indices], f)
