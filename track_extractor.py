@@ -1,3 +1,5 @@
+#Attempts to extract only the track segment bytes from TD6 files. Will probably fail on about half of them.
+
 import sys
 import os
 import numpy as np

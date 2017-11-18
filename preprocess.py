@@ -1,3 +1,5 @@
+#For preprocessing data to be fed into the RNN (in rnn_train.py)
+
 import os
 import sys
 import numpy as np

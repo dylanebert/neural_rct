@@ -1,3 +1,5 @@
+#To train the RNN. Train results saved in tmp (overwrites)
+
 import tensorflow as tf
 import numpy as np
 import sys

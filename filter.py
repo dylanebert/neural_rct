@@ -1,3 +1,5 @@
+#Use to filter out a particular type of coaster
+
 import sys
 import os
 import numpy as np

@@ -1,3 +1,5 @@
+#To actually build the coaster. Must be trained with nn_train.py first.
+
 import tensorflow as tf
 import numpy as np
 import pickle
