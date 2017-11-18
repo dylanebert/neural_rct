@@ -40,20 +40,44 @@ state = np.zeros([batch_size, window_size])
 with tf.Session() as sess:
 	saver.restore(sess, 'tmp/model.ckpt')
 	i = 0
-	while i < 200:
+	track = []
+	while True:
 		x_batch = state
 		res_probs = sess.run(logits, feed_dict = {x: x_batch})
 		res_probs_batch = res_probs[0]
 		results = np.argsort(-res_probs_batch[-1])
 		j = 0
-		while not is_valid(from_indices[state[0][-1]], from_indices[results[j]]):
+		options = []
+		for _ in range(5):
+			while j < len(results) and not is_valid(from_indices[state[0][-1]], from_indices[results[j]]):
+				j += 1
+			if not j < len(results):
+				break
+			options += [results[j]]
 			j += 1
-		state[0] = np.append(state[0][1:], [results[j]])
-		segment = segment_dict[from_indices[state[0][-1]]]
-		print(segment)
+		k = 0
+		segment = ''
+		while True:
+			n = input('{0}: '.format(segment_dict[from_indices[options[k]]]))
+			if n == '':
+				break
+			elif n == 'n':
+				k += 1
+				if k >= len(options):
+					k = 0
+			elif n in segments:
+				segment = n
+				break
+			else:
+				print('Invalid input. Enter to accept, \'n\' for next option, or an acceptable \'[segment]\'') 
+		if segment == '':
+			segment = segment_dict[from_indices[options[k]]]	
+		track += [segment]
+		print(track)
 		if segment == 'ELEM_BEGIN_STATION':
 			break
-		i += 1		
+		state[0] = np.append(state[0][1:], [options[k]])
+		i += 1
 		
 		
 		
