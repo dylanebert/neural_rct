@@ -132,6 +132,9 @@ p {
 	background-color: rgba(0,0,0,.1);
 	text-align: center;
 }
+#track_vid {
+	max-width: 100%;
+}
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
@@ -202,7 +205,11 @@ p {
 	<p>By taking the top prediction, adding it to the track, and feeding this new track back into the recurrent network, a complete roller coaster can be generated!
 		So, let's see exactly how I did just this.</p>
 </div>
-<!--Track generation gif-->
+<div class="container content">
+	<video autoplay loop id="track_vid">
+		<source src="src/track.mp4">
+	</video>
+</div>
 <div class="container narrow">
 	<h2>Detailing the implementation</h2>
 	<p>All code is available <a href="https://github.com/dylanebert/neural_rct" target="_blank">here</a>.
