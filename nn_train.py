@@ -9,13 +9,12 @@ from preprocess import preprocess, batched
 #hyperparameters
 batch_size = 25
 window_size = 50
-num_epochs = 100
-num_layers = 2
+num_epochs = 10
 
 #data
 if len(sys.argv) != 2:
 	sys.exit('Invalid syntax. Use \'nn [dirname]\' for training')
-data, from_indices, vocab_size = preprocess(sys.argv[1], window_size)
+data, to_indices, from_indices, vocab_size = preprocess(sys.argv[1], window_size)
 x_batches, y_batches = batched(data, batch_size, window_size)
 num_batches = len(x_batches)
 
@@ -68,4 +67,4 @@ with tf.Session() as sess:
 	
 #Save properties
 with open('tmp/vars.pkl', 'wb') as f:
-	pickle.dump([batch_size, window_size, vocab_size, num_layers, from_indices], f)
+	pickle.dump([batch_size, window_size, vocab_size, to_indices, from_indices], f)

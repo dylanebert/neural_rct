@@ -7,7 +7,7 @@ from segments import *
 
 #load properties
 with open('tmp/vars.pkl', 'rb') as f:
-	batch_size, window_size, vocab_size, num_layers, from_indices = pickle.load(f)
+	batch_size, window_size, vocab_size, to_indices, from_indices = pickle.load(f)
 
 #graph input
 x = tf.placeholder(tf.int32, [batch_size, window_size])
@@ -78,7 +78,7 @@ with tf.Session() as sess:
 		print(track)
 		if segment == 'ELEM_BEGIN_STATION':
 			break
-		state[0] = np.append(state[0][1:], [options[k]])
+		state[0] = np.append(state[0][1:], to_indices[segment_dict_inverse[segment]])
 		i += 1
 		
 		

@@ -26,7 +26,7 @@ def preprocess(dir, window_size):
 	from_indices = dict(zip(to_indices.values(), to_indices.keys())) #Map from indices to segment values
 	indexed = [to_indices[segment] for segment in data if segment in to_indices]
 	vocab_size = len(to_indices)
-	return indexed, from_indices, vocab_size
+	return indexed, to_indices, from_indices, vocab_size
 	
 def batched(data, batch_size, window_size):
 	num_batches = len(data) // batch_size
