@@ -229,7 +229,7 @@ p {
 		If a suggested next element isn’t found in this dictionary of possible sequential pieces, it’s ignored.</p>
 	<p>Finally, tracks are padded with [window_size] zeros at the beginning, to give clear indications of where tracks start and end, and so a matrix of zeros can be used as initial input in building.</p>
 </div>
-<div class="container narrow">
+<div class="container narrow" id="system_title">
 	<h2>Usable system</h2>
 </div>
 <div class="container-fluid" id="system">
@@ -299,6 +299,10 @@ $(document).ready(function() {
 					.addTo(controller);
 	
 	TweenMax.from($('#title'), 1, {top: '50%', height: 0, opacity: 0, ease: Sine.easeOut})
+	
+	$('#skip').click(function() {
+		TweenMax.to(window, 1.5, {scrollTo: '#system_title', ease: Sine.easeOut});
+	});
 });
 </script>
 </html>
