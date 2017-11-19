@@ -94,10 +94,9 @@ p {
 	background-color: rgba(0,0,0,.2)
 }
 #points {
-	float: left;
-	width: 40%;
-	margin-top: 75px;
+	margin-top: 10px;
 	margin-bottom: 100px;
+	position: absolute;
 }
 #points p {
 	margin-bottom: 200px;
@@ -107,13 +106,18 @@ p {
 	opacity: .5;
 }
 #anchored {
-	float: right;
-	width: 60%;
 	padding: 25px;
+	width: 800px;
+	max-width: 100%;
+	position: absolute;
+	margin-top: 90px;
 }
 #anchored_contents img {
-	max-width: 100%;
 	width: 800px;
+	max-width: 100%;
+}
+#system {
+	height: 1900px;
 }
 #footer {
 	margin-top: 2em;
@@ -134,6 +138,18 @@ p {
 	}
 	#skip {
 		width: 600px;
+	}
+	#points {
+		float: left;
+		width: 40%;
+		position: relative;
+		margin-top: 75px;
+	}
+	#anchored {
+		float: right;
+		width: 60%;
+		position: relative;
+		margin-top: 0;
 	}
 }
 </style>
@@ -274,27 +290,27 @@ p {
 <script>
 $(document).ready(function() {
 	var controller = new ScrollMagic.Controller();
-	var scene = new ScrollMagic.Scene({triggerElement: '#system', duration: 1100, triggerHook: 0})
+	var scene = new ScrollMagic.Scene({triggerElement: '#system_title', duration: 1300, triggerHook: 0})
 					.setPin('#anchored_contents')
 					.addTo(controller);
 	var tween = TweenMax.to($('#p1'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p1', triggerHook: .2})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p1', triggerHook: .25})
 					.setTween(tween)
 					.addTo(controller);
 	var tween = TweenMax.to($('#p2'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p2', triggerHook: .2})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p2', triggerHook: .25})
 					.setTween(tween)
 					.addTo(controller);
 	var tween = TweenMax.to($('#p3'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p3', triggerHook: .2})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p3', triggerHook: .25})
 					.setTween(tween)
 					.addTo(controller);
 	var tween = TweenMax.to($('#p4'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p4', triggerHook: .2})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p4', triggerHook: .25})
 					.setTween(tween)
 					.addTo(controller);
 	var tween = TweenMax.to($('#p5'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p5', triggerHook: .2})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p5', triggerHook: .25})
 					.setTween(tween)
 					.addTo(controller);
 	
