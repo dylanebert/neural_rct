@@ -1,1 +1,304 @@
-<h1>Hi</h1>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dylan Ebert</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSPlugin.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSRulePlugin.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/ScrollToPlugin.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<style>
+body {
+	font-family: 'Open Sans', sans-serif;
+	width: 100%;
+	height: 100%;
+}
+h1 {
+	letter-spacing: .15em;
+	padding: .5em 0;
+	font-size: 3em;
+	font-weight: bold;
+}
+h4 {
+	letter-spacing: .1em;
+	padding: 0 1em 1em 1em;
+	font-size: 1em;
+	font-weight: 600;
+}
+h2 {
+	font-weight: bold;
+	padding-bottom: .25em;
+}
+h3 {
+	padding-bottom: .25em;
+}
+p {
+	font-size: 1.25em;
+}
+.col-img {
+	max-width: 100%;
+	height: auto;
+}
+.col-xs-4 {
+	padding: 0;
+}
+.row {
+	max-width: 100%;
+	margin: 0;
+}
+.container {
+	padding-top: 1em;
+}
+.content {
+	text-align: center;
+	padding: 1em 0;
+}
+.full-img {
+	width: 600px;
+	max-width: 100%;
+}
+#header {
+	height: 100%;
+	color: white;
+	background-image: url('src/wooden.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	margin-bottom: 2em;
+}
+#title {
+	position: absolute;
+	bottom: 0;
+	width: 80%;
+	left: 10%;
+	text-align: center;
+	margin-bottom: 50px;
+	background-color: rgba(0,0,0,.8);
+	overflow: hidden;
+}
+#skip {
+	border: 1px solid gray;
+	text-align: center;
+	margin-top: 1em;
+	padding: .5em 0;
+	background-color: rgba(0,0,0,.1)
+}
+#skip:hover {
+	background-color: rgba(0,0,0,.2)
+}
+#points {
+	float: left;
+	width: 40%;
+	margin-top: 75px;
+	margin-bottom: 100px;
+}
+#points p {
+	margin-bottom: 200px;
+	padding: 10px;
+	border-left: 3px solid gray;
+	background-color: rgba(0,0,0,.1);
+	opacity: .5;
+}
+#anchored {
+	float: right;
+	width: 60%;
+	padding: 25px;
+}
+#anchored_contents img {
+	max-width: 100%;
+	width: 800px;
+}
+#footer {
+	margin-top: 2em;
+	padding: 3em 0;
+	background-color: rgba(0,0,0,.1);
+	text-align: center;
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	#title {
+		width: 800px;
+		left: 50%;
+		margin-left: -400px;
+	}
+	.narrow {
+		width: 800px;
+	}
+	#skip {
+		width: 600px;
+	}
+}
+</style>
+<body>
+<div id="header">
+	<!--Tracks gifs-->
+	<div id="title">
+		<h1>Neural RCT</h1>
+		<h4>Using recurrent neural networks to generate tracks for Rollercoaster Tycoon 2</h3>
+	</div>
+</div>
+<div class="container narrow">
+	<h2>A bit of background...</h2>
+	<p>Neural nets have been used to generate some very interesting results in Creative AI applications, such as face synthesis, music generation, and procedural modeling.
+		The question here is, how can they be used with a classic game, Rollercoaster Tycoon 2?</p>
+</div>
+<div class="container narrow">
+	<div class="row">
+		<div class="col-xs-4">
+			<video autoplay loop class="col-img">
+				<source src="src/faces.gif">
+			</video>
+		</div>
+		<div class="col-xs-4">
+			<img src="src/duet.jpg" class="col-img">
+		</div>
+		<div class="col-xs-4" class="col-img">
+			<img src="src/geometry.png" class="col-img">
+		</div>
+	</div>
+</div>
+<div class="container narrow">
+	<p>Word prediction will be useful to review here. To do word prediction, a sequence of words must first be mapped to a sequence of numbers. 
+		Then, this sequence of numbers is fed to a recurrent neural net to compute the likelihood of possible next entries in the sequence. 
+		These possibilities are ranked and converted back to words, then shown to you!</p>
+</div>
+<div class="container content">
+	<img src="src/words.png" class="full-img">
+</div>
+<div class="container narrow">
+	<p>A sequence of RCT2 track pieces makes up a roller coaster, much like a sequence of words makes up a sentence. So, like in word prediction, a sequence of track pieces 
+		can be mapped to a sequence of numbers and fed to a recurrent neural net to compute the likelihood of potential next track pieces.</p>
+	<p>By taking the top prediction, adding it to the track, and feeding this new track back into the recurrent network, a complete roller coaster can be generated!</p>
+</div>
+<!--Track generation gif-->
+<div class="container narrow">
+	<h2>Detailing the implementation</h2>
+	<p>This implementation is available <a href="https://github.com/dylanebert/neural_rct" target="_blank">here</a>.
+		These files will be referred to throughout the implementation details. Everything is written in python.</p>
+</div>
+<div class="container" id="skip">
+	<h5>Click here to skip the implementation details</h5>
+</div>
+<div class="container narrow">
+	<h3>Data Collection</h3>
+	<p>To implement this, the first thing we need is track data. Fortunately, RCT2 tracks can be saved and shared as .TD6 files, a run-length encoding format. 
+		I collected wooden roller coaster track files from two sources: those that come with the game, and those shared by users at <a href="http://rctgo.com" target="_blank">rctgo.com</a>.</p>
+	<p>The problem is simplified by using only wooden roller coasters. This is because wooden coasters don’t contain complex pieces like loops, twists, vertical drops, etc. 
+		The utility script ‘filter.py’ is used to filter out wooden tracks (=34).</p>
+</div>
+<div class="content">
+	<img src="src/wooden2.png" class="full-img">
+</div>
+<div class="container narrow">
+	<p>These .TD6 track files contain metadata about the track such as type, excitement/intensity/nausea ratings, scenery, etc., as well as the track itself. 
+		The track contains 2-byte track segments. The first byte corresponds to the track pieces (for example, ‘ELEM FLAT’ or ‘ELEM LEFT QUARTER TURN 5 TILES 25 DEG UP’), 
+		and the second byte contains bit-wise metadata such as color, chain lifts, and braking speed. More details can be found at 
+		<a href="http://freerct.github.io/RCTTechDepot-Archive/TD6.html" target="_blank">RCTTechDepot</a>.</p>
+	<p>For this project, we only really need to pay attention to the bytes that corresponding to the actual track pieces. 
+		The script ‘track_extractor.py’ attempts to use some heuristics to extract these pieces. There are many fragments and flags that I don’t really understand in the encoding. 
+		The script tries to account for these, but still fails for about half of coaster files. This could certainly be improved with some more investigation into these run-length encodings. 
+		The extracted tracks used in this project can be found in the ‘extracted_tracks_wood’ directory.</p>
+</div>
+<div class="container narrow">
+	<h3>Recurrent Neural Network</h3>
+	<p>Now for the neural network. This consists of ‘preprocess.py’, ‘nn_train.py’, and ‘nn_build.py’. This implementation uses the Tensorflow library.</p>
+</div>
+<div class="container content">
+	<img src="src/nn.png" class="full-img">
+</div>
+<div class="container narrow">
+	<p>The neural network structure, as shown in the diagram above, consists of [batch_size x window_size] sequences of track piece indices that are converted to one-hot vectors. 
+		These are fed to two sequential recurrent LSTM layers, from which a [batch_size x window_size x vocab_size] set of logits is calculated. 
+		In training, sparse softmax cross entropy loss across these logits are minimized. In building, the last entry of the first batch (logits[0][-1]) consists 
+		of a [vocab_size]-sized vector that can be treated as a probability distribution for the next track piece.</p>
+	<p>To prepare the data to be fed into the neural network, the track pieces must be indexed and arranged into a [batch_size x window_size] matrix. This is handled in ‘preprocess.py’.</p>
+</div>
+<div class="container narrow">
+	<h3>Other considerations</h3>
+	<p>Some additional problem-specific augmentations are used. First, ‘covered’ track pieces are mapped to their corresponding regular track pieces, an easy simplification with only cosmetic ramifications.</p>
+	<p>Also, some constraints are hard-coded into the building script. These are based on constraints in the game for which track piece can come after another. 
+		For example, ‘ELEM FLAT’ can’t come after ‘ELEM 25 DEG UP’ - an ‘ELEM 25 DEG UP TO FLAT’ would need to come in between. A dictionary of these constraints can be found in ‘segments.py’. 
+		If a suggested next element isn’t found in this dictionary of possible sequential pieces, it’s ignored.</p>
+	<p>Finally, tracks are padded with [window_size] zeros at the beginning, to give clear indications of where tracks start and end, and so a matrix of zeros can be used as initial input in building.</p>
+</div>
+<div class="container narrow">
+	<h2>Usable system</h2>
+</div>
+<div class="container-fluid" id="system">
+	<div id="points">
+		<p id="p1">The final system is a simple interactive console application, embedded directly into ‘nn_build.py’.</p>
+		<p id="p2">The system provides a suggestion for the next track piece.</p>
+		<p id="p3">The user can accept this suggestion by pressing enter. This new piece is added to the list of segments, which is printed after each new entry.</p>
+		<p id="p4">If a user doesn’t like the next suggestion, they can type ‘n’ to cycle through the top five suggestions, accepting whichever they prefer.</p>
+		<p id="p5">Finally, if a user doesn’t like any of these suggestions, they can enter their own next track piece.</p>
+	</div>
+	<div id="anchored">
+		<div id="anchored_contents">
+			<h3>Generating a track</h3>
+			<img src="src/console.png">
+		</div>
+	</div>
+</div>
+<div class="container narrow">
+	<h2>Results</h2>
+	<p>Here are some examples of roller coasters that were generated with this system:</p>
+	<!--Results-->
+</div>
+<div class="container narrow">
+	<h2>Some problems and how they can be fixed</h2>
+	<p>Obviously, this is just a console application, with no integration in the game, 
+		However, it would be possible to integrate this directly into <a href="https://github.com/OpenRCT2/OpenRCT2" target="_blank">the open source implementation of RCT2</a>.</p>
+	<p>Additionally, there are some limitations caused by the fact that this system is purely data-driven. Some of these are listed below:</p>
+	<ul>
+		<li>Circuits: The start and end station are generally not the same station; the circuit must be closed manually.</li>
+		<li>Collisions: A suggested track piece may cause a collision with another part of the track, which isn’t allowed in the game.</li>
+		<li>Everything else (sort of): Parameters like size, excitement, intensity, nausea, g-forces, aesthetic, etc. are not considered. 
+			However, the data-driven nature of this approach does cause these to be automatically embedded, to some extent.</li>
+	</ul>
+	<p>One idea for how to remedy these problems is to mix this approach with reinforcement learning. The latest track piece can be a treated as a state, and building the next piece as an action. 
+		Things like closing the circuit can be treated as rewards, collisions as failures. It would be very interesting to see how this would look!</p>
+</div>
+<div class="container-fluid" id="footer">
+	<p>Thanks for reading about this work. Learn more at 
+		<a href="http://dylanebert.de">dylanebert.de</a> or email me at <a href="mailto:dylan.ebert@gmail.com">dylan.ebert@gmail.com</a>.</p>
+</div>
+</body>
+<script>
+$(document).ready(function() {
+	var controller = new ScrollMagic.Controller();
+	var scene = new ScrollMagic.Scene({triggerElement: '#system', duration: 1100, triggerHook: 0})
+					.setPin('#anchored_contents')
+					.addTo(controller);
+	var tween = TweenMax.to($('#p1'), .25, {opacity: 1})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p1', triggerHook: .2})
+					.setTween(tween)
+					.addTo(controller);
+	var tween = TweenMax.to($('#p2'), .25, {opacity: 1})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p2', triggerHook: .2})
+					.setTween(tween)
+					.addTo(controller);
+	var tween = TweenMax.to($('#p3'), .25, {opacity: 1})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p3', triggerHook: .2})
+					.setTween(tween)
+					.addTo(controller);
+	var tween = TweenMax.to($('#p4'), .25, {opacity: 1})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p4', triggerHook: .2})
+					.setTween(tween)
+					.addTo(controller);
+	var tween = TweenMax.to($('#p5'), .25, {opacity: 1})
+	var scene = new ScrollMagic.Scene({triggerElement: '#p5', triggerHook: .2})
+					.setTween(tween)
+					.addTo(controller);
+	
+	TweenMax.from($('#title'), 1, {top: '50%', height: 0, opacity: 0, ease: Sine.easeOut})
+});
+</script>
+</html>
