@@ -9,7 +9,7 @@ from preprocess import preprocess, batched
 #hyperparameters
 batch_size = 25
 window_size = 50
-num_epochs = 10
+num_epochs = 128
 
 #data
 if len(sys.argv) != 2:
@@ -61,7 +61,7 @@ with tf.Session() as sess:
 			_, loss_val = sess.run([optimizer, loss], feed_dict={x: x_batch, y: y_batch})
 			perplexity += loss_val
 		perplexity = np.exp(perplexity / num_batches)
-		print(perplexity)
+		print('{0}: {1}'.format(step, perplexity))
 		
 	saver.save(sess, 'tmp/model.ckpt')
 	

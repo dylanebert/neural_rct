@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dylan Ebert</title>
+	<title>Neural RCT</title>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
@@ -64,6 +64,9 @@ p {
 	width: 600px;
 	max-width: 100%;
 }
+.pad {
+	padding-top: 2em;
+}
 #header {
 	height: 100%;
 	color: white;
@@ -103,9 +106,9 @@ p {
 #points p {
 	margin-bottom: 200px;
 	padding: 10px;
-	border-left: 3px solid gray;
+	border-left: 3px solid red;
 	background-color: rgba(0,0,0,.1);
-	opacity: .5;
+	opacity: .4;
 }
 #anchored {
 	padding: 25px;
@@ -115,9 +118,10 @@ p {
 	margin-top: 90px;
 	left: 0;
 }
-#anchored_contents img {
+#console_vid {
 	width: 800px;
 	max-width: 100%;
+	height: auto;
 }
 #system {
 	height: 1900px;
@@ -184,7 +188,7 @@ p {
 		</div>
 	</div>
 </div>
-<div class="container narrow">
+<div class="container narrow pad">
 	<p>Word prediction will be useful to review here. To do word prediction, a sequence of words must first be mapped to a sequence of numbers. 
 		Then, this sequence of numbers is fed to a recurrent neural net to compute the likelihood of possible next entries in the sequence. 
 		These possibilities are ranked and converted back to words, then shown to you!</p>
@@ -195,13 +199,14 @@ p {
 <div class="container narrow">
 	<p>A sequence of RCT2 track pieces makes up a roller coaster, much like a sequence of words makes up a sentence. So, like in word prediction, a sequence of track pieces 
 		can be mapped to a sequence of numbers and fed to a recurrent neural net to compute the likelihood of potential next track pieces.</p>
-	<p>By taking the top prediction, adding it to the track, and feeding this new track back into the recurrent network, a complete roller coaster can be generated!</p>
+	<p>By taking the top prediction, adding it to the track, and feeding this new track back into the recurrent network, a complete roller coaster can be generated!
+		So, let's see exactly how I did just this.</p>
 </div>
 <!--Track generation gif-->
 <div class="container narrow">
 	<h2>Detailing the implementation</h2>
-	<p>This implementation is available <a href="https://github.com/dylanebert/neural_rct" target="_blank">here</a>.
-		These files will be referred to throughout the implementation details. Everything is written in python.</p>
+	<p>All code is available <a href="https://github.com/dylanebert/neural_rct" target="_blank">here</a>.
+		These files will be referred to throughout this section. Everything is written in python.</p>
 </div>
 <div class="container" id="skip">
 	<h5>Click here to skip the implementation details</h5>
@@ -249,20 +254,20 @@ p {
 	<p>Finally, tracks are padded with [window_size] zeros at the beginning, to give clear indications of where tracks start and end, and so a matrix of zeros can be used as initial input in building.</p>
 </div>
 <div class="container narrow" id="system_title">
-	<h2>Usable system</h2>
+	<h2>The System</h2>
 </div>
 <div class="container-fluid" id="system">
 	<div id="points">
 		<p id="p1">The final system is a simple interactive console application, embedded directly into ‘nn_build.py’.</p>
 		<p id="p2">The system provides a suggestion for the next track piece.</p>
-		<p id="p3">The user can accept this suggestion by pressing enter. This new piece is added to the list of segments, which is printed after each new entry.</p>
+		<p id="p3">The user can accept this suggestion by pressing enter. This new piece is added to the list of segments, which is printed after each new entry, as shown.</p>
 		<p id="p4">If a user doesn’t like the next suggestion, they can type ‘n’ to cycle through the top five suggestions, accepting whichever they prefer.</p>
 		<p id="p5">Finally, if a user doesn’t like any of these suggestions, they can enter their own next track piece.</p>
 	</div>
 	<div id="anchored">
 		<div id="anchored_contents">
 			<h3>Generating a track</h3>
-			<img src="src/console.PNG">
+			<img src="src/console0.PNG" id="console_vid">
 		</div>
 	</div>
 </div>
@@ -296,28 +301,47 @@ $(document).ready(function() {
 	var scene = new ScrollMagic.Scene({triggerElement: '#system_title', duration: 1300, triggerHook: 0})
 					.setPin('#anchored_contents')
 					.addTo(controller);
-	var tween = TweenMax.to($('#p1'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p1', triggerHook: .25})
+	var tween = TweenMax.to($('#p1'), .25, {opacity: 1});
+	var scene = new ScrollMagic.Scene({triggerElement: '#p1', triggerHook: .3})
 					.setTween(tween)
+					.on('start', function(e) {
+						$('#console_vid').attr('src', 'src/console0.PNG');
+					})
 					.addTo(controller);
-	var tween = TweenMax.to($('#p2'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p2', triggerHook: .25})
+	var tween = TweenMax.to($('#p2'), .25, {opacity: 1});
+	var scene = new ScrollMagic.Scene({triggerElement: '#p2', triggerHook: .3})
 					.setTween(tween)
+					.on('start', function(e) {
+						var scrollDir = e.target.controller().info('scrollDirection');
+						$('#console_vid').attr('src', scrollDir == 'FORWARD' ? 'src/console1.PNG' : 'src/console0.PNG');
+					})
 					.addTo(controller);
-	var tween = TweenMax.to($('#p3'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p3', triggerHook: .25})
+	var tween = TweenMax.to($('#p3'), .25, {opacity: 1});
+	var scene = new ScrollMagic.Scene({triggerElement: '#p3', triggerHook: .3})
 					.setTween(tween)
+					.on('start', function(e) {
+						var scrollDir = e.target.controller().info('scrollDirection');
+						$('#console_vid').attr('src', scrollDir == 'FORWARD' ? 'src/console2.gif' : 'src/console1.PNG');
+					})
 					.addTo(controller);
-	var tween = TweenMax.to($('#p4'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p4', triggerHook: .25})
+	var tween = TweenMax.to($('#p4'), .25, {opacity: 1});
+	var scene = new ScrollMagic.Scene({triggerElement: '#p4', triggerHook: .3})
 					.setTween(tween)
+					.on('start', function(e) {
+						var scrollDir = e.target.controller().info('scrollDirection');
+						$('#console_vid').attr('src', scrollDir == 'FORWARD' ? 'src/console3.gif' : 'src/console2.gif');
+					})
 					.addTo(controller);
-	var tween = TweenMax.to($('#p5'), .25, {opacity: 1})
-	var scene = new ScrollMagic.Scene({triggerElement: '#p5', triggerHook: .25})
+	var tween = TweenMax.to($('#p5'), .25, {opacity: 1});
+	var scene = new ScrollMagic.Scene({triggerElement: '#p5', triggerHook: .3})
 					.setTween(tween)
+					.on('start', function(e) {
+						var scrollDir = e.target.controller().info('scrollDirection');
+						$('#console_vid').attr('src', scrollDir == 'FORWARD' ? 'src/console4.gif' : 'src/console3.gif');
+					})
 					.addTo(controller);
 	
-	TweenMax.from($('#title'), 1, {top: '50%', height: 0, opacity: 0, ease: Sine.easeOut})
+	TweenMax.from($('#title'), 1, {height: 0, opacity: 0, ease: Sine.easeOut});
 	
 	$('#skip').click(function() {
 		TweenMax.to(window, 1.5, {scrollTo: '#system_title', ease: Sine.easeOut});
